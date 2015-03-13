@@ -3,9 +3,10 @@ var mongo = require('./hippymongodb')
 var cassandra = require('./hippycassandra')
 var redis = require('./hippyredis')
 var riak = require('./hippyriak')
+var memcached = require('./hippymemcached')
 
 function completer(line) {
-  var completions = 'help exit quit q list mongodb cassandra'.split(' ')
+  var completions = 'help exit quit q list mongodb cassandra riak redis memcached'.split(' ')
   var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })
   return [hits.length ? hits : completions, line]
 }
@@ -67,7 +68,20 @@ rl.on('line', function(line) {
           case 'couchdb':break;
           case 'hbase':break;
           case 'hive':break;
-          case 'memcached':break;
+          case 'memcached':
+                          memcached.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
+                          memcached.commandParse(l_args,function(err,message){
+                              if(err){ 
+                                  log('error',message)
+                              }
+                              else{
+                                  if(message)
+                                     log('info',message)
+                              }
+                              rl.prompt()
+                              rl.resume()
+                          });
+                          break;
           case 'mongodb': 
                           mongo.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
                           mongo.commandParse(l_args,function(err,message){
