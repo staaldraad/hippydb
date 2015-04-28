@@ -23,14 +23,16 @@ function log(type,line)
                     console.log("\033[93m[-]\033[0m %s",line) 
                     break
        case 'info':
-       default:
                    console.log("\033[92m[*]\033[0m %s",line)
+                   break;
+       default:    
+                   console.log(type)
                    break;
    }
 }
 
 var options = {host:'127.0.0.1',port:'',verbose:false,limit:10} //default options
-var dbs = ['cassandra','couchdb','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
+var dbs = ['cassandra','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
 
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout,completer);
@@ -168,19 +170,22 @@ rl.on('line', function(line) {
 		       break;    
             case 'info':
                        log('info','Default ports for supported databases')
-                       log('info','6379/tcp  -- Redis')
-                       log('info','8087/tcp  -- Riak')
-                       log('info','9042/tcp  -- Cassandra')
-                       log('info','9090/tcp  -- HBase')
-                       log('info','11211/tcp -- Memcached')
-                       log('info','27017/tcp -- MongoDB')
-                       log('info','10000/tcp -- Hive')
+                       log('6379/tcp  -- Redis')
+                       log('8087/tcp  -- Riak')
+                       log('9042/tcp  -- Cassandra')
+                       log('9090/tcp  -- HBase')
+                       log('11211/tcp -- Memcached')
+                       log('27017/tcp -- MongoDB')
+                       log('10000/tcp -- Hive')
                        break;
 	    case 'options':
 		       log('info',options) 
 		       break;
 	    case 'list':
-		       log('info','Supported databases: '+dbs) 
+		       log('info','Supported databases: ')
+                       dbs.forEach(function(db){
+                             log(db)
+                       }) 
 		       break;
 	    case 'set':
 		       if(l_args.length < 3){
