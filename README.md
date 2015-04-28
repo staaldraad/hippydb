@@ -14,7 +14,7 @@ This tool allows you to interact with the following databases:
 ## Install
 You need to setup your Nodejs environment, in the project directory:
 ```
-git clone https://gitlab.sensepost.com/etienne/hippydb.git
+git clone https://github.com/staaldraad/hippydb.git
 npm install
 ```
 
