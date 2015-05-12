@@ -54,6 +54,12 @@ rl.on('line', function(line) {
   }
   if(dbs.indexOf(l) > -1){//db specific command
       rl.pause()
+      if(l_args.length == 0){ 
+              log('error','Usage: '+l+' help'); 
+              rl.prompt()
+              rl.resume()
+              return; }
+     
       switch(l){
           case 'cassandra':
                            cassandra.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
@@ -166,7 +172,7 @@ rl.on('line', function(line) {
 		       break;
 	    case 'help':
 	    case '?':
-		       log('info','help exit quit q list info')
+		       log('info','help\nexit\nquit|q\nlist\ninfo')
 		       break;    
             case 'info':
                        log('info','Default ports for supported databases')
@@ -198,6 +204,7 @@ rl.on('line', function(line) {
 		           options[l_args[1]] = l_args[2]
 		       log('info',l_args[1]+'='+options[l_args[1]])
 		       break;
+        
 	    default:
 	      log('warn','Command not recognised. Try \'help\'');
 	      break;
