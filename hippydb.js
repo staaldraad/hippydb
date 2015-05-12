@@ -6,9 +6,10 @@ var riak = require('./hippyriak')
 var memcached = require('./hippymemcached')
 var hbase = require('./hbase/hippyhbase')
 var hive = require('./hive/hippyhive')
+var util = require('util')
 
 function completer(line) {
-  var completions = 'help exit quit q list info mongodb cassandra riak redis memcached'.split(' ')
+  var completions = 'help exit quit q list options info set mongodb cassandra riak redis memcached'.split(' ')
   var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })
   return [hits.length ? hits : completions, line]
 }
@@ -172,7 +173,7 @@ rl.on('line', function(line) {
 		       break;
 	    case 'help':
 	    case '?':
-		       log('info','help\nexit\nquit|q\nlist\ninfo')
+		       log('info','help\nexit\nquit|q\nlist\ninfo\noptions\nset')
 		       break;    
             case 'info':
                        log('info','Default ports for supported databases')
@@ -185,7 +186,7 @@ rl.on('line', function(line) {
                        log('10000/tcp -- Hive')
                        break;
 	    case 'options':
-		       log('info',options) 
+		       log('info',util.inspect(options, {showHidden: false, depth: null})) 
 		       break;
 	    case 'list':
 		       log('info','Supported databases: ')
