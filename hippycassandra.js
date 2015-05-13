@@ -65,6 +65,9 @@ var listTables = function(client,keyspace,callback)
              if(err){
                   message = "Got an error, giving you everything we can... \n"
                   client.execute('SELECT * FROM schema_columnfamilies', function(err,results){
+                      if(!results||err){
+                          return callback(true,err);
+                      }
                       results.rows.forEach(function(row){
                              message += row.keyspace_name+' : '+row.columnfamily_name+'\n';
                       });
@@ -155,7 +158,7 @@ exports.commandParse=function(command,callback)
        case 'tables':
                       if(!command[2]) 
                               return(callback(true,'Missing keyspace name'))
-                      connector(command[2],function(err,con){
+                      connector('system',function(err,con){
                          if(err)
                              return callback(err,'Error connecting to Cassandra')
                          else

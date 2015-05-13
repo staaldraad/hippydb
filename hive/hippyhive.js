@@ -2,7 +2,7 @@ var thrift = require('thrift');
 var HiveBase = require('./gen-nodejs/ThriftHive');
 var FacebookBase = require('./gen-nodejs/FacebookService');
 
-var options = {host:'127.0.0.1',port:10000,limit:10,type:0}
+var options = {host:'127.0.0.1',port:10000,limit:10,type:0,timeout:1000}
 var connection = null
 //type=1 -- FramedTransport
 //type=0 -- BufferedTransport
@@ -63,9 +63,9 @@ var listTables= function(client,database,callback){
 
 var connector = function(callback){
      if(options.type==0)
-        connection = thrift.createConnection(options.host, options.port, { transport: thrift.TBufferedTransport, protocol:thrift.TBinaryProtocol });
+        connection = thrift.createConnection(options.host, options.port, { transport: thrift.TBufferedTransport, protocol:thrift.TBinaryProtocol,timeout:options.timeout });
      else
-        connection = thrift.createConnection(options.host, options.port, { transport: thrift.TFramedTransport, protocol:thrift.TBinaryProtocol });
+        connection = thrift.createConnection(options.host, options.port, { transport: thrift.TFramedTransport, protocol:thrift.TBinaryProtocol,timeout:options.timeout });
 
      connection.on('error',function(err){
 	     return callback(err,'Error connecting to Hive')
@@ -81,6 +81,7 @@ exports.setOptions=function(noptions){
       options.port = noptions.port? noptions.port:options.port
       options.limit = noptions.limit? noptions.limit:options.limit
       options.type = noptions.type? noptions.type:options.type
+      options.timeout= noptions.timeout? noptions.timeout:options.timeout
 }
 
 exports.commandParse=function(command,callback)

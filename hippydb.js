@@ -6,9 +6,11 @@ var riak = require('./hippyriak')
 var memcached = require('./hippymemcached')
 var hbase = require('./hbase/hippyhbase')
 var hive = require('./hive/hippyhive')
+var accumulo = require('./accumulo/hippyaccumulo')
+var util = require('util')
 
 function completer(line) {
-  var completions = 'help exit quit q list info mongodb cassandra riak redis memcached'.split(' ')
+  var completions = 'help exit quit q list options info set mongodb cassandra riak redis memcached'.split(' ')
   var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })
   return [hits.length ? hits : completions, line]
 }
@@ -31,8 +33,8 @@ function log(type,line)
    }
 }
 
-var options = {host:'127.0.0.1',port:'',verbose:false,limit:10} //default options
-var dbs = ['cassandra','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
+var options = {host:'127.0.0.1',port:'',verbose:false,limit:10,timeout:1000} //default options
+var dbs = ['accumulo','cassandra','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
 
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout,completer);
@@ -54,7 +56,27 @@ rl.on('line', function(line) {
   }
   if(dbs.indexOf(l) > -1){//db specific command
       rl.pause()
+      if(l_args.length == 0){ 
+              log('error','Usage: '+l+' help'); 
+              rl.prompt()
+              rl.resume()
+              return; }
+     
       switch(l){
+          case 'accumulo':
+                           accumulo.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
+                           accumulo.commandParse(l_args,function(err,message){
+                              if(err){ 
+                                  log('error',message)
+                              }
+                              else{
+                                  if(message)
+                                     log('info',message)
+                              }
+                              rl.prompt()
+                              rl.resume()
+                          });
+                         break;
           case 'cassandra':
                            cassandra.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
                            cassandra.commandParse(l_args,function(err,message){
@@ -166,7 +188,7 @@ rl.on('line', function(line) {
 		       break;
 	    case 'help':
 	    case '?':
-		       log('info','help exit quit q list info')
+		       log('info','help\nexit\nquit|q\nlist\ninfo\noptions\nset')
 		       break;    
             case 'info':
                        log('info','Default ports for supported databases')
@@ -179,7 +201,7 @@ rl.on('line', function(line) {
                        log('10000/tcp -- Hive')
                        break;
 	    case 'options':
-		       log('info',options) 
+		       log('info',util.inspect(options, {showHidden: false, depth: null})) 
 		       break;
 	    case 'list':
 		       log('info','Supported databases: ')
@@ -198,6 +220,7 @@ rl.on('line', function(line) {
 		           options[l_args[1]] = l_args[2]
 		       log('info',l_args[1]+'='+options[l_args[1]])
 		       break;
+        
 	    default:
 	      log('warn','Command not recognised. Try \'help\'');
 	      break;
