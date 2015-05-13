@@ -42,7 +42,7 @@ if(argv.s){
             client.shutdown();
             return;
         }
-        console.info("[*] Connected!")
+        console.info("[*] Connected! - "+host)
         console.info("[*] Custom SQL command: "+sql);
         client.execute(sql, function (err, result) {
           if(err){
@@ -70,7 +70,7 @@ if(!argv.k&&!argv.s&&!argv.t){
             client.shutdown();
             return;
         }
-        console.info("[*] Connected!")
+        console.info("[*] Connected! - "+host)
         console.info("[*] Getting all keyspaces");
         client.execute('SELECT * FROM schema_keyspaces', function (err, result) {
           if(err){
