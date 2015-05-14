@@ -1,0 +1,13 @@
+{
+	"name": "hippydb-tool",
+	"main": "hippydb.js",
+	"dependencies": {
+		"cassandra-driver": "~1.0.3",
+                "memcached":"2.1.0",
+                "mongodb":"1.4.30",
+                "redis":"0.12.1",
+                "riak-pb":"0.1.9",
+                "thrift":"0.9.2",
+                "node-thrift":"~1.0.0"
+	}
+}

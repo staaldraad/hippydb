@@ -2,10 +2,11 @@ var util = require('util');
 var cassandra = require('cassandra-driver');
 
 var options = {host:'127.0.0.1',port:9042,limit:10}
+exports.commands = ['help','status','keys','tables','dump','cql']
 
 var help = function(callback){
        var helpm = "Cassandra DB dumper -- Help\n"
-           helpm += "Commands: dbs, collections, docs, status\n"
+           helpm += "Commands: \n"
            helpm += "> cassandra status                        //Check if we can connect to the database\n"
            helpm += "> cassandra keys                          //this will list all databases on the host\n"
            helpm += "> cassandra tables <keyspace-name>        //show all collections in a database\n"
