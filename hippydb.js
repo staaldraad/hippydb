@@ -10,9 +10,19 @@ var aerospike= require('./hippyaerospike')
 var util = require('util')
 
 function completer(line) {
-  var completions = 'help exit quit q list options info set aerospike mongodb cassandra riak redis memcached'.split(' ')
-  var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })
-  return [hits.length ? hits : completions, line]
+  var first_completions = 'help exit quit q list options info set aerospike mongodb cassandra riak redis memcached'.split(' ')
+  var second_completions =  {'mongodb':mongo.commands,'riak':riak.commands,'aerospike':aerospike.commands,'redis':redis.commands,'riak':riak.commands,'cassandra':cassandra.commands,'memcached':memcached.commands,'hbase':hbase.commands,'hive':hive.commands}
+
+  var parts = line.split(' ')
+  if(parts.length==1){
+          var hits = first_completions.filter(function(c) { return c.indexOf(line) == 0 })
+          return [hits.length ? hits : first_completions, line]
+  }
+  else
+  {
+          var hits = second_completions[parts[0]].filter(function(c) { return c.indexOf(parts[1]) == 0 })
+          return [hits.length ? hits : second_completions, parts[1]]
+  }  
 }
 
 function log(type,line)

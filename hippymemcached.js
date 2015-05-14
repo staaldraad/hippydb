@@ -5,10 +5,11 @@
 */
 var Memcached = require('memcached');
 var options = {host:'127.0.0.1',port:11211,limit:10}
+exports.commands = ['help','status','keys','slabs','dump']
 
 var help = function(callback){
        var helpm = "Memcached DB dumper -- Help\n"
-           helpm += "Commands: status\n"
+           helpm += "Commands: \n"
            helpm += "> memcached status                        //Check if we can connect to the database\n"
            helpm += "> memcached keys                          //this will list all databases on the host\n"
            helpm += "> memcached slabs                         //show all collections in a database\n"

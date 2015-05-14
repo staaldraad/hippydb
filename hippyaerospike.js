@@ -2,15 +2,16 @@ var util = require('util')
 var aerospike = require("aerospike")
 
 var options = {host:'127.0.0.1',port:3000,limit:10}
+exports.commands = ['help','status','info','bins','sets']
 
 var help = function(callback){
        var helpm = "Aerospike dumper -- Help\n"
-           helpm += "Commands: dbs, collections, docs, status\n"
+           helpm += "Commands: \n"
            helpm += "> aerospike status                       //Check if we can connect to the database\n"
-           helpm += "> aerospike keys                         //list all [h]keys on the host\n"
-           helpm += "> aerospike key  <key>                   //dump value of key\n"
-           helpm += "> aerospike hkey <hkey>                  //dump value of hkey\n"
-           helpm += "> aerospike dump                        //show 'limit' number of values.\n"
+           helpm += "> aerospike info                       //list info about the host\n"
+           helpm += "> aerospike namespaces                   //get namespaces\n"
+           helpm += "> aerospike bins                  //get bins in a namespace\n"
+           helpm += "> aerospike sets                        //get sets in a namespace.\n"
 
        return callback(null,helpm)
 }

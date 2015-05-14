@@ -3,6 +3,7 @@ var MongoClient = require('mongodb').MongoClient
 
 //defaults
 var options = {host:'127.0.0.1',port:'27017',limit:10}
+exports.commands = ['help','status','dbs','collections','dump']
 
 var help = function(callback){
        var helpm = "MongoDB dumper -- Help\n"

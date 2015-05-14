@@ -2,10 +2,11 @@ var util = require('util')
 var redis = require("redis")
 
 var options = {host:'127.0.0.1',port:6379,limit:10}
+exports.commands = ['help','status','key','keys','hkey','dump']
 
 var help = function(callback){
        var helpm = "Redis dumper -- Help\n"
-           helpm += "Commands: dbs, collections, docs, status\n"
+           helpm += "Commands: \n"
            helpm += "> redis status                       //Check if we can connect to the database\n"
            helpm += "> redis keys                         //list all [h]keys on the host\n"
            helpm += "> redis key  <key>                   //dump value of key\n"

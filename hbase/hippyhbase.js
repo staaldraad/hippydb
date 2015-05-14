@@ -4,13 +4,15 @@ var HBase = require('./gen-nodejs/Hbase');
 var HBaseTypes = require('./gen-nodejs/Hbase_types');
 
 var options = {host:'127.0.0.1',port:9090,limit:10,type:0}
+exports.commands = ['help','status','tables','','']
+
 var connection = null
 //type=1 -- FramedTransport
 //type=0 -- BufferedTransport
 
 var help = function(callback){
        var helpm = "HBase dumper -- Help\n"
-           helpm += "Commands: dbs, collections, docs, status\n"
+           helpm += "Commands: \n"
            helpm += "> hbase status                       //Check if we can connect to the database\n"
            helpm += "> hbase tables                       //list all tables on the host\n"
            helpm += "> hbase key  <key>                   //dump value of key\n"
@@ -78,7 +80,7 @@ exports.commandParse=function(command,callback)
                       break;
        case 'tables':  connector(function(err,con){
                          if(err)
-                             return callback(err,'Error connecting to Redis')
+                             return callback(err,'Error connecting to hbase')
                          else
                              listTables(con,callback)
                     })
@@ -88,7 +90,7 @@ exports.commandParse=function(command,callback)
                               return(callback(true,'Missing key name'))
                       connector(function(err,con){
                          if(err)
-                             return callback(err,'Error connecting to Redis')
+                             return callback(err,'Error connecting to hbase')
                          else
                              dumpKey(con,command[2],callback)
                     })
@@ -98,7 +100,7 @@ exports.commandParse=function(command,callback)
                               return(callback(true,'Missing hkey name'))
                       connector(function(err,con){
                          if(err)
-                             return callback(err,'Error connecting to Redis')
+                             return callback(err,'Error connecting to hbase')
                          else
                              dumpHkey(con,command[2],callback)
                     })
@@ -106,7 +108,7 @@ exports.commandParse=function(command,callback)
        case 'dump':  
                       connector(function(err,con){
                          if(err)
-                             return callback(err,'Error connecting to Redis')
+                             return callback(err,'Error connecting to hbase')
                          else
                              dump(con,callback)
                     })

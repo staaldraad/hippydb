@@ -2,10 +2,11 @@ var util = require('util')
 var riak = require("riak-pb")
 
 var options = {host:'127.0.0.1',port:8087,limit:10}
+exports.commands = ['help','status','buckets','keys','dump','dumpk']
 
 var help = function(callback){
        var helpm = "Riak dumper -- Help\n"
-           helpm += "Commands: status, buckets, keys, dump, dumpk\n"
+           helpm += "Commands: \n"
            helpm += "> riak status                       //Check if we can connect to the database\n"
            helpm += "> riak buckets                      //list all buckets on the host\n"
            helpm += "> riak keys  <bucket>               //list all keys in a bucket\n"

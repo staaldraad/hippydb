@@ -3,14 +3,17 @@ var HiveBase = require('./gen-nodejs/ThriftHive');
 var FacebookBase = require('./gen-nodejs/FacebookService');
 
 var options = {host:'127.0.0.1',port:10000,limit:10,type:0,timeout:1000}
+exports.commands = ['help','status','dbs','tables','key','hkey','dump']
+
 var connection = null
 //type=1 -- FramedTransport
 //type=0 -- BufferedTransport
 
 var help = function(callback){
        var helpm = "Hive dumper -- Help\n"
-           helpm += "Commands: dbs, collections, docs, status\n"
+           helpm += "Commands: \n"
            helpm += "> hive status                       //Check if we can connect to the database\n"
+           helpm += "> hive dbs                          //list all tables on the host\n"
            helpm += "> hive tables                       //list all tables on the host\n"
            helpm += "> hive key  <key>                   //dump value of key\n"
            helpm += "> hive hkey <hkey>                  //dump value of hkey\n"
