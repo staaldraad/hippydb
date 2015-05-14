@@ -2,8 +2,8 @@
 
 This tool allows you to interact with the following databases:
 
+* Aerospike
 * Cassandra
-* CouchDB
 * Hbase
 * Hive
 * Memcached
