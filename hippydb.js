@@ -6,11 +6,11 @@ var riak = require('./hippyriak')
 var memcached = require('./hippymemcached')
 var hbase = require('./hbase/hippyhbase')
 var hive = require('./hive/hippyhive')
-var accumulo = require('./accumulo/hippyaccumulo')
+var aerospike= require('./hippyaerospike')
 var util = require('util')
 
 function completer(line) {
-  var completions = 'help exit quit q list options info set mongodb cassandra riak redis memcached'.split(' ')
+  var completions = 'help exit quit q list options info set aerospike mongodb cassandra riak redis memcached'.split(' ')
   var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })
   return [hits.length ? hits : completions, line]
 }
@@ -34,7 +34,7 @@ function log(type,line)
 }
 
 var options = {host:'127.0.0.1',port:'',verbose:false,limit:10,timeout:1000} //default options
-var dbs = ['accumulo','cassandra','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
+var dbs = ['aerospike','accumulo','cassandra','hbase','hive','memcached','mongodb','redis','riak'] //supported databases
 
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout,completer);
@@ -63,9 +63,9 @@ rl.on('line', function(line) {
               return; }
      
       switch(l){
-          case 'accumulo':
-                           accumulo.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
-                           accumulo.commandParse(l_args,function(err,message){
+          case 'aerospike':
+                           aerospike.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
+                           aerospike.commandParse(l_args,function(err,message){
                               if(err){ 
                                   log('error',message)
                               }
@@ -77,7 +77,7 @@ rl.on('line', function(line) {
                               rl.resume()
                           });
                          break;
-          case 'cassandra':
+         case 'cassandra':
                            cassandra.setOptions({'host':options.host,'limit':options.limit,'port':options.port?options.port:null})
                            cassandra.commandParse(l_args,function(err,message){
                               if(err){ 
@@ -192,6 +192,7 @@ rl.on('line', function(line) {
 		       break;    
             case 'info':
                        log('info','Default ports for supported databases')
+                       log('3000/tcp  -- Aerospike')
                        log('6379/tcp  -- Redis')
                        log('8087/tcp  -- Riak')
                        log('9042/tcp  -- Cassandra')
